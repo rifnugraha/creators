@@ -149,10 +149,17 @@ export default function RaeCreatorProfile() {
                   target={position === 0 ? "_blank" : undefined}
                   rel={position === 0 ? "noopener noreferrer" : undefined}
                   drag={isMobile ? "x" : false}
-                  dragConstraints={{ left: 0, right: 0 }}
+                  dragDirectionLock
+                  dragElastic={0.12}
+                  whileTap={{ cursor: "grabbing" }}
                   onDragEnd={(e, info) => {
-                    if (info.offset.x < -50) nextSlide();
-                    if (info.offset.x > 50) prevSlide();
+                    if (info.offset.x < -50) {
+                      nextSlide();
+                    }
+
+                    if (info.offset.x > 50) {
+                      prevSlide();
+                    }
                   }}
                   onClick={(e) => {
                     if (position !== 0) {
@@ -172,10 +179,13 @@ export default function RaeCreatorProfile() {
                     damping: 20,
                     mass: 1.2,
                   }}
-                  className={`absolute ${
+                  className={`absolute touch-pan-y ${
                     position === 0 ? "cursor-pointer" : "cursor-pointer"
                   }`}
-                  style={{ zIndex: current.zIndex }}
+                  style={{
+                    zIndex: current.zIndex,
+                    touchAction: "pan-y",
+                  }}
                 >
                   <div className="relative">
                     <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 w-[70%] h-8 bg-black/40 blur-2xl rounded-full" />
