@@ -19,17 +19,17 @@ export default function RaeCreatorProfile() {
     },
     {
       name: "BAYU",
-      motto: "Lorem ipsum",
+      motto: "AWOKWOWAK",
       instagram: "@qbayyy",
       link: "https://instagram.com/qbayyy",
-      image: "/bayu.jpg",
+      image: "/bayu.jpeg",
     },
     {
       name: "RAE",
       motto: "Do Whatever U Want. Yes, Whatever.",
       instagram: "@rifnugraha_",
       link: "https://instagram.com/rifnugraha_",
-      image: "/rae.jpg",
+      image: "/itsrae.jpg",
     },
     {
       name: "LEVY",
