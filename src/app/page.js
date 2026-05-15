@@ -1,10 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function RaeCreatorProfile() {
   const [active, setActive] = useState(2);
+
+  const touchStartX = useRef(0);
+  const touchEndX = useRef(0);
 
   const members = [
     {
@@ -44,6 +47,8 @@ export default function RaeCreatorProfile() {
   const nextSlide = () => {
     setActive((prev) => Math.min(prev + 1, members.length - 1));
   };
+
+  const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
 
   return (
     <main
@@ -85,26 +90,28 @@ export default function RaeCreatorProfile() {
             →
           </button>
 
-          <motion.div
-  className="relative w-full h-full flex items-center justify-center"
-  drag={isMobile ? "x" : false}
-  dragConstraints={{ left: 0, right: 0 }}
-  dragElastic={0.08}
-  onDragEnd={(e, info) => {
-    if (info.offset.x < -50) {
-      nextSlide();
-    }
+          <div
+            className="relative w-full h-full flex items-center justify-center"
+            onTouchStart={(e) => {
+              touchStartX.current = e.changedTouches[0].screenX;
+            }}
+            onTouchMove={(e) => {
+              touchEndX.current = e.changedTouches[0].screenX;
+            }}
+            onTouchEnd={() => {
+              const distance = touchStartX.current - touchEndX.current;
 
-    if (info.offset.x > 50) {
-      prevSlide();
-    }
-  }}
->
+              if (distance > 50) {
+                nextSlide();
+              }
+
+              if (distance < -50) {
+                prevSlide();
+              }
+            }}
+          >
             {members.map((member, index) => {
               let position = index - active;
-
-              const isMobile =
-                typeof window !== "undefined" && window.innerWidth < 768;
 
               const configs = {
                 0: {
@@ -180,9 +187,7 @@ export default function RaeCreatorProfile() {
                     damping: 20,
                     mass: 1.2,
                   }}
-                  className={`absolute touch-pan-y ${
-                    position === 0 ? "cursor-pointer" : "cursor-pointer"
-                  }`}
+                  className="absolute cursor-pointer touch-pan-y"
                   style={{
                     zIndex: current.zIndex,
                     touchAction: "pan-y",
@@ -220,7 +225,9 @@ export default function RaeCreatorProfile() {
                             >
                               <h2
                                 className="text-4xl md:text-6xl font-black leading-none text-white"
-                                style={{ fontFamily: "Impact, sans-serif" }}
+                                style={{
+                                  fontFamily: "Impact, sans-serif",
+                                }}
                               >
                                 {member.name}
                               </h2>
@@ -242,7 +249,7 @@ export default function RaeCreatorProfile() {
                 </motion.a>
               );
             })}
-          <</motion.div>>
+          </div>
         </div>
       </section>
     </main>
