@@ -26,7 +26,7 @@ export default function RaeCreatorProfile() {
     },
     {
       name: "RAE",
-      motto: "Football or F1? Yes.",
+      motto: "Football or 1? Yes.",
       instagram: "@rifnugraha_",
       link: "https://instagram.com/rifnugraha_",
       image: "/itsrae1.jpg",
