@@ -29,7 +29,7 @@ export default function RaeCreatorProfile() {
       motto: "Do Whatever U Want. Yes, Whatever.",
       instagram: "@rifnugraha_",
       link: "https://instagram.com/rifnugraha_",
-      image: "/itsrae.jpg",
+      image: "/itsrae1.jpg",
     },
     {
       name: "LEVY",
