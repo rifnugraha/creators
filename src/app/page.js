@@ -85,7 +85,21 @@ export default function RaeCreatorProfile() {
             →
           </button>
 
-          <div className="relative w-full h-full flex items-center justify-center">
+          <motion.div
+  className="relative w-full h-full flex items-center justify-center"
+  drag={isMobile ? "x" : false}
+  dragConstraints={{ left: 0, right: 0 }}
+  dragElastic={0.08}
+  onDragEnd={(e, info) => {
+    if (info.offset.x < -50) {
+      nextSlide();
+    }
+
+    if (info.offset.x > 50) {
+      prevSlide();
+    }
+  }}
+>
             {members.map((member, index) => {
               let position = index - active;
 
@@ -148,19 +162,6 @@ export default function RaeCreatorProfile() {
                   href={position === 0 ? member.link : undefined}
                   target={position === 0 ? "_blank" : undefined}
                   rel={position === 0 ? "noopener noreferrer" : undefined}
-                  drag={isMobile ? "x" : false}
-                  dragDirectionLock
-                  dragElastic={0.12}
-                  whileTap={{ cursor: "grabbing" }}
-                  onDragEnd={(e, info) => {
-                    if (info.offset.x < -50) {
-                      nextSlide();
-                    }
-
-                    if (info.offset.x > 50) {
-                      prevSlide();
-                    }
-                  }}
                   onClick={(e) => {
                     if (position !== 0) {
                       e.preventDefault();
@@ -241,7 +242,7 @@ export default function RaeCreatorProfile() {
                 </motion.a>
               );
             })}
-          </div>
+          <</motion.div>>
         </div>
       </section>
     </main>
