@@ -16,21 +16,21 @@ export default function RaeCreatorProfile() {
     },
     {
       name: "BAYU",
-      motto: "AWOKWOAKW",
+      motto: "Lorem ipsum",
       instagram: "@qbayyy",
       link: "https://instagram.com/qbayyy",
-      image: "/bayu.jpeg",
+      image: "/bayu.jpg",
     },
     {
       name: "RAE",
-      motto: "Do whatever u want. Yes, whatever",
+      motto: "Do Whatever U Want. Yes, Whatever.",
       instagram: "@rifnugraha_",
       link: "https://instagram.com/rifnugraha_",
-      image: "/itsrae1.jpg",
+      image: "/rae.jpg",
     },
     {
       name: "LEVY",
-      motto: "Tidak mengejar validasi, Tapi mengejar kualitas.",
+      motto: "Tidak mengejar validasi, tapi mengejar kualitas.",
       instagram: "@levyfajri",
       link: "https://instagram.com/levyfajri",
       image: "/lepi.jpeg",
@@ -53,44 +53,46 @@ export default function RaeCreatorProfile() {
       <div className="absolute inset-0 bg-black/20" />
 
       <section className="relative z-10 h-screen flex flex-col items-center justify-center px-6">
-        <div className="absolute top-4 md:top-6 text-center z-[5]">
+        {/* TITLE */}
+        <div className="absolute top-[8vh] md:top-6 text-center z-[5]">
           <h1
-            className="text-5xl md:text-7xl font-black tracking-tight text-white"
+            className="text-4xl md:text-7xl font-black tracking-tight text-white"
             style={{ fontFamily: "Impact, sans-serif" }}
           >
             PRESENTED BY
           </h1>
 
-          <p className="text-xs md:text-sm mt-2 text-white/80 tracking-wide font-light">
+          <p className="text-[10px] md:text-sm mt-2 text-white/80 tracking-wide font-light">
             Social Media Marketing Optimization
           </p>
         </div>
 
-        <div className="relative w-full max-w-6xl h-[500px] mt-24 md:mt-28 flex items-center justify-center overflow-visible">
+        {/* CAROUSEL */}
+        <div className="relative w-full max-w-6xl h-[500px] mt-10 md:mt-28 flex items-center justify-center overflow-visible">
+          {/* LEFT BUTTON */}
           <button
             onClick={prevSlide}
-            className="absolute left-[18%] md:left-[28%] top-[54%] -translate-y-1/2 z-[80] w-14 h-14 rounded-full border border-white/30 bg-white/5 backdrop-blur-xl flex items-center justify-center hover:scale-110 transition"
+            className="hidden md:flex absolute left-[18%] md:left-[28%] top-[54%] -translate-y-1/2 z-[80] w-14 h-14 rounded-full border border-white/30 bg-white/5 backdrop-blur-xl items-center justify-center hover:scale-110 transition"
           >
             ←
           </button>
 
+          {/* RIGHT BUTTON */}
           <button
             onClick={nextSlide}
-            className="absolute right-[18%] md:right-[28%] top-[54%] -translate-y-1/2 z-[80] w-14 h-14 rounded-full border border-white/30 bg-white/5 backdrop-blur-xl flex items-center justify-center hover:scale-110 transition"
+            className="hidden md:flex absolute right-[18%] md:right-[28%] top-[54%] -translate-y-1/2 z-[80] w-14 h-14 rounded-full border border-white/30 bg-white/5 backdrop-blur-xl items-center justify-center hover:scale-110 transition"
           >
             →
           </button>
 
           <div className="relative w-full h-full flex items-center justify-center">
             {members.map((member, index) => {
-              const total = members.length;
               let position = index - active;
 
-              // finite cinematic stack (no infinite loop / no teleport)
-              // card tetap di sisi masing-masing dan hanya bergeser satu arah
+              const isMobile =
+                typeof window !== "undefined" && window.innerWidth < 768;
 
               const configs = {
-                // center focus
                 0: {
                   x: 0,
                   scale: 1,
@@ -98,30 +100,34 @@ export default function RaeCreatorProfile() {
                   zIndex: 50,
                   rotateY: 0,
                 },
+
                 1: {
-                  x: 220,
-                  scale: 0.6,
+                  x: isMobile ? 110 : 220,
+                  scale: isMobile ? 0.72 : 0.6,
                   opacity: 0.7,
                   zIndex: 30,
                   rotateY: -18,
                 },
+
                 "-1": {
-                  x: -220,
-                  scale: 0.6,
+                  x: isMobile ? -110 : -220,
+                  scale: isMobile ? 0.72 : 0.6,
                   opacity: 0.7,
                   zIndex: 30,
                   rotateY: 18,
                 },
+
                 2: {
-                  x: 360,
-                  scale: 0.4,
+                  x: isMobile ? 180 : 360,
+                  scale: isMobile ? 0.5 : 0.4,
                   opacity: 0.35,
                   zIndex: 10,
                   rotateY: -25,
                 },
+
                 "-2": {
-                  x: -360,
-                  scale: 0.4,
+                  x: isMobile ? -180 : -360,
+                  scale: isMobile ? 0.5 : 0.4,
                   opacity: 0.35,
                   zIndex: 10,
                   rotateY: 25,
@@ -142,6 +148,18 @@ export default function RaeCreatorProfile() {
                   href={position === 0 ? member.link : undefined}
                   target={position === 0 ? "_blank" : undefined}
                   rel={position === 0 ? "noopener noreferrer" : undefined}
+                  drag={isMobile ? "x" : false}
+                  dragConstraints={{ left: 0, right: 0 }}
+                  onDragEnd={(e, info) => {
+                    if (info.offset.x < -50) nextSlide();
+                    if (info.offset.x > 50) prevSlide();
+                  }}
+                  onClick={(e) => {
+                    if (position !== 0) {
+                      e.preventDefault();
+                      setActive(index);
+                    }
+                  }}
                   animate={{
                     x: current.x,
                     scale: current.scale,
@@ -154,19 +172,22 @@ export default function RaeCreatorProfile() {
                     damping: 20,
                     mass: 1.2,
                   }}
-                  className={`absolute ${position === 0 ? "cursor-pointer" : "pointer-events-none cursor-default"}`}
+                  className={`absolute ${
+                    position === 0 ? "cursor-pointer" : "cursor-pointer"
+                  }`}
                   style={{ zIndex: current.zIndex }}
                 >
                   <div className="relative">
                     <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 w-[70%] h-8 bg-black/40 blur-2xl rounded-full" />
 
-                    <div className="relative w-[170px] md:w-[260px] h-[260px] md:h-[390px] rounded-[38px] p-[6px] bg-white/15 backdrop-blur-3xl border border-white/30 shadow-[0_0_40px_rgba(255,255,255,0.15)] overflow-hidden">
+                    <div className="relative w-[190px] md:w-[260px] h-[300px] md:h-[390px] rounded-[38px] p-[6px] bg-white/15 backdrop-blur-3xl border border-white/30 shadow-[0_0_40px_rgba(255,255,255,0.15)] overflow-hidden">
                       <div className="absolute inset-0 rounded-[38px] bg-gradient-to-b from-white/30 to-white/5 opacity-70" />
 
                       <div className="relative w-full h-full rounded-[32px] overflow-hidden bg-black/10">
                         {position !== 0 && (
                           <div className="absolute inset-0 z-50" />
                         )}
+
                         <img
                           src={member.image}
                           alt={member.name}
@@ -193,7 +214,7 @@ export default function RaeCreatorProfile() {
                                 {member.name}
                               </h2>
 
-                              <p className="mt-3 text-xs md:text-sm font-normal leading-snug max-w-[220px] text-white">
+                              <p className="mt-3 text-xs md:text-sm font-light leading-snug max-w-[220px] text-white">
                                 {member.motto}
                               </p>
 
