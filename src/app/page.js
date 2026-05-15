@@ -19,7 +19,7 @@ export default function RaeCreatorProfile() {
     },
     {
       name: "BAYU",
-      motto: "AWOKWOWAK",
+      motto: "kiw",
       instagram: "@qbayyy",
       link: "https://instagram.com/qbayyy",
       image: "/bayuu.png",
