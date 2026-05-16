@@ -9,6 +9,7 @@ export default function RaeCreatorProfile() {
 
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
+  const isDragging = useRef(false);
 
   useEffect(() => {
     const checkMobile = () => {
@@ -108,10 +109,15 @@ export default function RaeCreatorProfile() {
           <div
             className="relative w-full h-full flex items-center justify-center"
             onTouchStart={(e) => {
+              isDragging.current = false;
               touchStartX.current = e.changedTouches[0].screenX;
             }}
             onTouchMove={(e) => {
               touchEndX.current = e.changedTouches[0].screenX;
+
+              if (Math.abs(touchStartX.current - touchEndX.current) > 10) {
+                isDragging.current = true;
+              }
             }}
             onTouchEnd={() => {
               const distance = touchStartX.current - touchEndX.current;
@@ -200,7 +206,6 @@ export default function RaeCreatorProfile() {
                   <div className="relative">
                     <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 w-[70%] h-8 bg-black/40 blur-2xl rounded-full" />
 
-                    {/* DESKTOP */}
                     {!isMobile ? (
                       <a
                         href={position === 0 ? member.link : undefined}
@@ -217,9 +222,12 @@ export default function RaeCreatorProfile() {
                         <CardContent member={member} position={position} />
                       </a>
                     ) : (
-                      /* MOBILE */
                       <div
-                        onClick={() => {
+                        onClick={(e) => {
+                          e.stopPropagation();
+
+                          if (isDragging.current) return;
+
                           if (position === 0) {
                             window.open(member.link, "_blank");
                           }
