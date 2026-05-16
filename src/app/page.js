@@ -115,7 +115,7 @@ export default function RaeCreatorProfile() {
             }}
           >
             {members.map((member, index) => {
-              let position = index - active;
+              const position = index - active;
 
               const configs = {
                 0: {
@@ -168,15 +168,12 @@ export default function RaeCreatorProfile() {
               };
 
               return (
-                <motion.a
+                <motion.div
                   key={member.name}
-                  href={position === 0 ? member.link : undefined}
-                  target={position === 0 ? "_blank" : undefined}
-                  rel={position === 0 ? "noopener noreferrer" : undefined}
-                  onClick={(e) => {
-                    if (position !== 0) {
-                      e.preventDefault();
-                      e.stopPropagation();
+                  onClick={() => {
+                    if (position === 0) {
+                      window.open(member.link, "_blank");
+                    } else {
                       setActive(index);
                     }
                   }}
@@ -196,7 +193,6 @@ export default function RaeCreatorProfile() {
                   style={{
                     zIndex: current.zIndex,
                     touchAction: "pan-y",
-                    pointerEvents: position === 0 ? "auto" : "auto",
                   }}
                 >
                   <div className="relative">
@@ -206,10 +202,6 @@ export default function RaeCreatorProfile() {
                       <div className="absolute inset-0 rounded-[38px] bg-gradient-to-b from-white/30 to-white/5 opacity-70" />
 
                       <div className="relative w-full h-full rounded-[32px] overflow-hidden bg-black/10">
-                        {position !== 0 && (
-                          <div className="absolute inset-0 z-50" />
-                        )}
-
                         <img
                           src={member.image}
                           alt={member.name}
@@ -254,7 +246,7 @@ export default function RaeCreatorProfile() {
                       </div>
                     </div>
                   </div>
-                </motion.a>
+                </motion.div>
               );
             })}
           </div>
