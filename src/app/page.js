@@ -164,16 +164,19 @@ export default function RaeCreatorProfile() {
               };
 
               return (
-                <motion.a
+                <motion.div
                   key={member.name}
-                  href={position === 0 ? member.link : undefined}
-                  target={position === 0 ? "_blank" : undefined}
-                  rel={position === 0 ? "noopener noreferrer" : undefined}
                   onClick={(e) => {
+                    e.stopPropagation();
+
+                    // kalau bukan main position
                     if (position !== 0) {
-                      e.preventDefault();
                       setActive(index);
+                      return;
                     }
+
+                    // kalau sudah main position
+                    window.open(member.link, "_blank");
                   }}
                   animate={{
                     x: current.x,
@@ -187,7 +190,7 @@ export default function RaeCreatorProfile() {
                     damping: 20,
                     mass: 1.2,
                   }}
-                  className="absolute cursor-pointer touch-pan-y"
+                  className="absolute cursor-pointer touch-pan-y select-none"
                   style={{
                     zIndex: current.zIndex,
                     touchAction: "pan-y",
@@ -246,7 +249,7 @@ export default function RaeCreatorProfile() {
                       </div>
                     </div>
                   </div>
-                </motion.a>
+                </motion.div>
               );
             })}
           </div>
