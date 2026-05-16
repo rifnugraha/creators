@@ -53,7 +53,9 @@ export default function RaeCreatorProfile() {
   return (
     <main
       className="w-full min-h-screen overflow-hidden bg-cover bg-center text-white relative"
-      style={{ backgroundImage: "url('/background.jpg')" }}
+      style={{
+        backgroundImage: "url('/background.jpg')",
+      }}
     >
       <div className="absolute inset-0 bg-black/20" />
 
@@ -62,7 +64,9 @@ export default function RaeCreatorProfile() {
         <div className="absolute top-[8vh] md:top-6 text-center z-[5]">
           <h1
             className="text-4xl md:text-7xl font-black tracking-tight text-white"
-            style={{ fontFamily: "Impact, sans-serif" }}
+            style={{
+              fontFamily: "Impact, sans-serif",
+            }}
           >
             PRESENTED BY
           </h1>
@@ -172,6 +176,7 @@ export default function RaeCreatorProfile() {
                   onClick={(e) => {
                     if (position !== 0) {
                       e.preventDefault();
+                      e.stopPropagation();
                       setActive(index);
                     }
                   }}
@@ -191,6 +196,7 @@ export default function RaeCreatorProfile() {
                   style={{
                     zIndex: current.zIndex,
                     touchAction: "pan-y",
+                    pointerEvents: position === 0 ? "auto" : "auto",
                   }}
                 >
                   <div className="relative">
@@ -220,7 +226,9 @@ export default function RaeCreatorProfile() {
                               initial={{ opacity: 0 }}
                               animate={{ opacity: 1 }}
                               exit={{ opacity: 0 }}
-                              transition={{ duration: 0.4 }}
+                              transition={{
+                                duration: 0.4,
+                              }}
                               className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent flex flex-col justify-end p-6"
                             >
                               <h2
