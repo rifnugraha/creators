@@ -62,7 +62,10 @@ export default function RaeCreatorProfile() {
         <div className="absolute top-[8vh] md:top-6 text-center z-[5]">
           <h1
             className="text-4xl md:text-7xl font-black tracking-tight text-white"
-            style={{ fontFamily: "Impact, sans-serif" }}
+            style={{
+              fontFamily:
+                'Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif',
+            }}
           >
             PRESENTED BY
           </h1>
@@ -164,16 +167,17 @@ export default function RaeCreatorProfile() {
               };
 
               return (
-                <motion.a
+                <motion.div
                   key={member.name}
-                  href={position === 0 ? member.link : undefined}
-                  target={position === 0 ? "_blank" : undefined}
-                  rel={position === 0 ? "noopener noreferrer" : undefined}
                   onClick={(e) => {
+                    e.stopPropagation();
+
                     if (position !== 0) {
-                      e.preventDefault();
                       setActive(index);
+                      return;
                     }
+
+                    window.open(member.link, "_blank");
                   }}
                   animate={{
                     x: current.x,
@@ -191,6 +195,7 @@ export default function RaeCreatorProfile() {
                   style={{
                     zIndex: current.zIndex,
                     touchAction: "pan-y",
+                    pointerEvents: "auto",
                   }}
                 >
                   <div className="relative">
@@ -200,13 +205,10 @@ export default function RaeCreatorProfile() {
                       <div className="absolute inset-0 rounded-[38px] bg-gradient-to-b from-white/30 to-white/5 opacity-70" />
 
                       <div className="relative w-full h-full rounded-[32px] overflow-hidden bg-black/10">
-                        {position !== 0 && (
-                          <div className="absolute inset-0 z-50" />
-                        )}
-
                         <img
                           src={member.image}
                           alt={member.name}
+                          draggable={false}
                           className={`w-full h-full object-cover transition duration-700 ${
                             position === 0
                               ? "blur-0 scale-100"
@@ -226,7 +228,8 @@ export default function RaeCreatorProfile() {
                               <h2
                                 className="text-4xl md:text-6xl font-black leading-none text-white"
                                 style={{
-                                  fontFamily: "Impact, sans-serif",
+                                  fontFamily:
+                                    'Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif',
                                 }}
                               >
                                 {member.name}
@@ -246,7 +249,7 @@ export default function RaeCreatorProfile() {
                       </div>
                     </div>
                   </div>
-                </motion.a>
+                </motion.div>
               );
             })}
           </div>
