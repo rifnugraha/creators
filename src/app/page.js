@@ -9,6 +9,7 @@ export default function RaeCreatorProfile() {
 
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
+  const isDragging = useRef(false);
 
   useEffect(() => {
     const checkMobile = () => {
@@ -107,10 +108,15 @@ export default function RaeCreatorProfile() {
           <div
             className="relative w-full h-full flex items-center justify-center"
             onTouchStart={(e) => {
+              isDragging.current = false;
               touchStartX.current = e.changedTouches[0].screenX;
             }}
             onTouchMove={(e) => {
               touchEndX.current = e.changedTouches[0].screenX;
+
+              if (Math.abs(touchStartX.current - touchEndX.current) > 10) {
+                isDragging.current = true;
+              }
             }}
             onTouchEnd={() => {
               const distance = touchStartX.current - touchEndX.current;
@@ -122,6 +128,10 @@ export default function RaeCreatorProfile() {
               if (distance < -50) {
                 prevSlide();
               }
+
+              setTimeout(() => {
+                isDragging.current = false;
+              }, 50);
             }}
           >
             {members.map((member, index) => {
@@ -180,8 +190,13 @@ export default function RaeCreatorProfile() {
               return (
                 <motion.div
                   key={member.name}
-                  onClick={() => {
+                  onClick={(e) => {
+                    e.stopPropagation();
+
+                    if (isDragging.current) return;
+
                     if (position !== 0) {
+                      e.preventDefault();
                       setActive(index);
                       return;
                     }
