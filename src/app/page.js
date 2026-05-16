@@ -191,17 +191,21 @@ export default function RaeCreatorProfile() {
                 <motion.div
                   key={member.name}
                   onClick={(e) => {
+                    e.preventDefault();
                     e.stopPropagation();
 
                     if (isDragging.current) return;
 
+                    // kalau card bukan di tengah
                     if (position !== 0) {
-                      e.preventDefault();
                       setActive(index);
                       return;
                     }
 
-                    window.open(member.link, "_blank");
+                    // kalau card sudah di tengah
+                    if (position === 0) {
+                      window.location.href = member.link;
+                    }
                   }}
                   animate={{
                     x: current.x,
