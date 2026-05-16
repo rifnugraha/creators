@@ -164,17 +164,8 @@ export default function RaeCreatorProfile() {
               };
 
               return (
-                <motion.a
+                <motion.div
                   key={member.name}
-                  href={position === 0 ? member.link : undefined}
-                  target={position === 0 ? "_blank" : undefined}
-                  rel={position === 0 ? "noopener noreferrer" : undefined}
-                  onClick={(e) => {
-                    if (position !== 0) {
-                      e.preventDefault();
-                      setActive(index);
-                    }
-                  }}
                   animate={{
                     x: current.x,
                     scale: current.scale,
@@ -187,26 +178,41 @@ export default function RaeCreatorProfile() {
                     damping: 20,
                     mass: 1.2,
                   }}
-                  className="absolute cursor-pointer touch-pan-y"
+                  className={`absolute touch-pan-y select-none ${
+                    position === 0
+                      ? "pointer-events-auto z-50"
+                      : "pointer-events-auto z-10"
+                  }`}
                   style={{
                     zIndex: current.zIndex,
                     touchAction: "pan-y",
                   }}
                 >
-                  <div className="relative">
+                  <div
+                    className="relative cursor-pointer"
+                    onClick={(e) => {
+                      e.stopPropagation();
+
+                      // card samping -> jadi main
+                      if (position !== 0) {
+                        setActive(index);
+                        return;
+                      }
+
+                      // card utama -> buka IG
+                      window.open(member.link, "_blank");
+                    }}
+                  >
                     <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 w-[70%] h-8 bg-black/40 blur-2xl rounded-full" />
 
                     <div className="relative w-[190px] md:w-[260px] h-[300px] md:h-[390px] rounded-[38px] p-[6px] bg-white/15 backdrop-blur-3xl border border-white/30 shadow-[0_0_40px_rgba(255,255,255,0.15)] overflow-hidden">
                       <div className="absolute inset-0 rounded-[38px] bg-gradient-to-b from-white/30 to-white/5 opacity-70" />
 
                       <div className="relative w-full h-full rounded-[32px] overflow-hidden bg-black/10">
-                        {position !== 0 && (
-                          <div className="absolute inset-0 z-50" />
-                        )}
-
                         <img
                           src={member.image}
                           alt={member.name}
+                          draggable={false}
                           className={`w-full h-full object-cover transition duration-700 ${
                             position === 0
                               ? "blur-0 scale-100"
@@ -246,7 +252,7 @@ export default function RaeCreatorProfile() {
                       </div>
                     </div>
                   </div>
-                </motion.a>
+                </motion.div>
               );
             })}
           </div>
