@@ -53,7 +53,9 @@ export default function RaeCreatorProfile() {
   return (
     <main
       className="w-full min-h-screen overflow-hidden bg-cover bg-center text-white relative"
-      style={{ backgroundImage: "url('/background.jpg')" }}
+      style={{
+        backgroundImage: "url('/background.jpg')",
+      }}
     >
       <div className="absolute inset-0 bg-black/20" />
 
@@ -62,7 +64,9 @@ export default function RaeCreatorProfile() {
         <div className="absolute top-[8vh] md:top-6 text-center z-[5]">
           <h1
             className="text-4xl md:text-7xl font-black tracking-tight text-white"
-            style={{ fontFamily: "Impact, sans-serif" }}
+            style={{
+              fontFamily: "Impact, sans-serif",
+            }}
           >
             PRESENTED BY
           </h1>
@@ -94,12 +98,16 @@ export default function RaeCreatorProfile() {
             className="relative w-full h-full flex items-center justify-center"
             onTouchStart={(e) => {
               touchStartX.current = e.changedTouches[0].screenX;
+              touchEndX.current = e.changedTouches[0].screenX;
             }}
             onTouchMove={(e) => {
               touchEndX.current = e.changedTouches[0].screenX;
             }}
             onTouchEnd={() => {
               const distance = touchStartX.current - touchEndX.current;
+
+              // kalau cuma tap kecil jangan dianggap swipe
+              if (Math.abs(distance) < 30) return;
 
               if (distance > 50) {
                 nextSlide();
@@ -164,14 +172,12 @@ export default function RaeCreatorProfile() {
               };
 
               return (
-                <motion.a
+                <motion.div
                   key={member.name}
-                  href={position === 0 ? member.link : undefined}
-                  target={position === 0 ? "_blank" : undefined}
-                  rel={position === 0 ? "noopener noreferrer" : undefined}
-                  onClick={(e) => {
-                    if (position !== 0) {
-                      e.preventDefault();
+                  onClick={() => {
+                    if (position === 0) {
+                      window.open(member.link, "_blank");
+                    } else {
                       setActive(index);
                     }
                   }}
@@ -187,10 +193,9 @@ export default function RaeCreatorProfile() {
                     damping: 20,
                     mass: 1.2,
                   }}
-                  className="absolute cursor-pointer touch-pan-y"
+                  className="absolute cursor-pointer"
                   style={{
                     zIndex: current.zIndex,
-                    touchAction: "pan-y",
                   }}
                 >
                   <div className="relative">
@@ -200,10 +205,6 @@ export default function RaeCreatorProfile() {
                       <div className="absolute inset-0 rounded-[38px] bg-gradient-to-b from-white/30 to-white/5 opacity-70" />
 
                       <div className="relative w-full h-full rounded-[32px] overflow-hidden bg-black/10">
-                        {position !== 0 && (
-                          <div className="absolute inset-0 z-50" />
-                        )}
-
                         <img
                           src={member.image}
                           alt={member.name}
@@ -220,7 +221,9 @@ export default function RaeCreatorProfile() {
                               initial={{ opacity: 0 }}
                               animate={{ opacity: 1 }}
                               exit={{ opacity: 0 }}
-                              transition={{ duration: 0.4 }}
+                              transition={{
+                                duration: 0.4,
+                              }}
                               className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent flex flex-col justify-end p-6"
                             >
                               <h2
@@ -246,7 +249,7 @@ export default function RaeCreatorProfile() {
                       </div>
                     </div>
                   </div>
-                </motion.a>
+                </motion.div>
               );
             })}
           </div>
