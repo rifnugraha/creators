@@ -1,27 +1,13 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function RaeCreatorProfile() {
   const [active, setActive] = useState(2);
-  const [isMobile, setIsMobile] = useState(false);
 
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
-  const isDragging = useRef(false);
-
-  useEffect(() => {
-    const checkMobile = () => {
-      setIsMobile(window.innerWidth < 768);
-    };
-
-    checkMobile();
-
-    window.addEventListener("resize", checkMobile);
-
-    return () => window.removeEventListener("resize", checkMobile);
-  }, []);
 
   const members = [
     {
@@ -62,6 +48,8 @@ export default function RaeCreatorProfile() {
     setActive((prev) => Math.min(prev + 1, members.length - 1));
   };
 
+  const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+
   return (
     <main
       className="w-full min-h-screen overflow-hidden bg-cover bg-center text-white relative"
@@ -69,15 +57,12 @@ export default function RaeCreatorProfile() {
     >
       <div className="absolute inset-0 bg-black/20" />
 
-      <section className="relative z-10 h-screen flex flex-col items-center justify-center px-4 md:px-6">
+      <section className="relative z-10 h-screen flex flex-col items-center justify-center px-6">
         {/* TITLE */}
-        <div className="absolute top-[6vh] md:top-6 text-center z-[5]">
+        <div className="absolute top-[8vh] md:top-6 text-center z-[5]">
           <h1
-            className="text-[42px] md:text-7xl font-black tracking-tight text-white leading-none"
-            style={{
-              fontFamily:
-                'Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif',
-            }}
+            className="text-4xl md:text-7xl font-black tracking-tight text-white"
+            style={{ fontFamily: "Impact, sans-serif" }}
           >
             PRESENTED BY
           </h1>
@@ -88,11 +73,11 @@ export default function RaeCreatorProfile() {
         </div>
 
         {/* CAROUSEL */}
-        <div className="relative w-full max-w-6xl h-[500px] mt-8 md:mt-28 flex items-center justify-center overflow-visible">
+        <div className="relative w-full max-w-6xl h-[500px] mt-10 md:mt-28 flex items-center justify-center overflow-visible">
           {/* LEFT BUTTON */}
           <button
             onClick={prevSlide}
-            className="hidden md:flex absolute left-[28%] top-[54%] -translate-y-1/2 z-[80] w-14 h-14 rounded-full border border-white/30 bg-white/5 backdrop-blur-xl items-center justify-center hover:scale-110 transition"
+            className="hidden md:flex absolute left-[18%] md:left-[28%] top-[54%] -translate-y-1/2 z-[80] w-14 h-14 rounded-full border border-white/30 bg-white/5 backdrop-blur-xl items-center justify-center hover:scale-110 transition"
           >
             ←
           </button>
@@ -100,7 +85,7 @@ export default function RaeCreatorProfile() {
           {/* RIGHT BUTTON */}
           <button
             onClick={nextSlide}
-            className="hidden md:flex absolute right-[28%] top-[54%] -translate-y-1/2 z-[80] w-14 h-14 rounded-full border border-white/30 bg-white/5 backdrop-blur-xl items-center justify-center hover:scale-110 transition"
+            className="hidden md:flex absolute right-[18%] md:right-[28%] top-[54%] -translate-y-1/2 z-[80] w-14 h-14 rounded-full border border-white/30 bg-white/5 backdrop-blur-xl items-center justify-center hover:scale-110 transition"
           >
             →
           </button>
@@ -108,15 +93,10 @@ export default function RaeCreatorProfile() {
           <div
             className="relative w-full h-full flex items-center justify-center"
             onTouchStart={(e) => {
-              isDragging.current = false;
               touchStartX.current = e.changedTouches[0].screenX;
             }}
             onTouchMove={(e) => {
               touchEndX.current = e.changedTouches[0].screenX;
-
-              if (Math.abs(touchStartX.current - touchEndX.current) > 10) {
-                isDragging.current = true;
-              }
             }}
             onTouchEnd={() => {
               const distance = touchStartX.current - touchEndX.current;
@@ -128,10 +108,6 @@ export default function RaeCreatorProfile() {
               if (distance < -50) {
                 prevSlide();
               }
-
-              setTimeout(() => {
-                isDragging.current = false;
-              }, 50);
             }}
           >
             {members.map((member, index) => {
@@ -147,32 +123,32 @@ export default function RaeCreatorProfile() {
                 },
 
                 1: {
-                  x: isMobile ? 95 : 220,
-                  scale: isMobile ? 0.76 : 0.6,
+                  x: isMobile ? 110 : 220,
+                  scale: isMobile ? 0.72 : 0.6,
                   opacity: 0.7,
                   zIndex: 30,
                   rotateY: -18,
                 },
 
                 "-1": {
-                  x: isMobile ? -95 : -220,
-                  scale: isMobile ? 0.76 : 0.6,
+                  x: isMobile ? -110 : -220,
+                  scale: isMobile ? 0.72 : 0.6,
                   opacity: 0.7,
                   zIndex: 30,
                   rotateY: 18,
                 },
 
                 2: {
-                  x: isMobile ? 150 : 360,
-                  scale: isMobile ? 0.55 : 0.4,
+                  x: isMobile ? 180 : 360,
+                  scale: isMobile ? 0.5 : 0.4,
                   opacity: 0.35,
                   zIndex: 10,
                   rotateY: -25,
                 },
 
                 "-2": {
-                  x: isMobile ? -150 : -360,
-                  scale: isMobile ? 0.55 : 0.4,
+                  x: isMobile ? -180 : -360,
+                  scale: isMobile ? 0.5 : 0.4,
                   opacity: 0.35,
                   zIndex: 10,
                   rotateY: 25,
@@ -188,23 +164,15 @@ export default function RaeCreatorProfile() {
               };
 
               return (
-                <motion.div
+                <motion.a
                   key={member.name}
+                  href={position === 0 ? member.link : undefined}
+                  target={position === 0 ? "_blank" : undefined}
+                  rel={position === 0 ? "noopener noreferrer" : undefined}
                   onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-
-                    if (isDragging.current) return;
-
-                    // kalau card bukan di tengah
                     if (position !== 0) {
+                      e.preventDefault();
                       setActive(index);
-                      return;
-                    }
-
-                    // kalau card sudah di tengah
-                    if (position === 0) {
-                      window.location.href = member.link;
                     }
                   }}
                   animate={{
@@ -215,21 +183,27 @@ export default function RaeCreatorProfile() {
                   }}
                   transition={{
                     type: "spring",
-                    stiffness: 90,
-                    damping: 18,
+                    stiffness: 85,
+                    damping: 20,
+                    mass: 1.2,
                   }}
-                  className="absolute cursor-pointer"
+                  className="absolute cursor-pointer touch-pan-y"
                   style={{
                     zIndex: current.zIndex,
+                    touchAction: "pan-y",
                   }}
                 >
                   <div className="relative">
                     <div className="absolute -bottom-10 left-1/2 -translate-x-1/2 w-[70%] h-8 bg-black/40 blur-2xl rounded-full" />
 
-                    <div className="relative w-[210px] md:w-[260px] h-[320px] md:h-[390px] rounded-[38px] p-[6px] bg-white/15 backdrop-blur-3xl border border-white/30 shadow-[0_0_40px_rgba(255,255,255,0.15)] overflow-hidden">
+                    <div className="relative w-[190px] md:w-[260px] h-[300px] md:h-[390px] rounded-[38px] p-[6px] bg-white/15 backdrop-blur-3xl border border-white/30 shadow-[0_0_40px_rgba(255,255,255,0.15)] overflow-hidden">
                       <div className="absolute inset-0 rounded-[38px] bg-gradient-to-b from-white/30 to-white/5 opacity-70" />
 
                       <div className="relative w-full h-full rounded-[32px] overflow-hidden bg-black/10">
+                        {position !== 0 && (
+                          <div className="absolute inset-0 z-50" />
+                        )}
+
                         <img
                           src={member.image}
                           alt={member.name}
@@ -246,14 +220,13 @@ export default function RaeCreatorProfile() {
                               initial={{ opacity: 0 }}
                               animate={{ opacity: 1 }}
                               exit={{ opacity: 0 }}
-                              transition={{ duration: 0.35 }}
+                              transition={{ duration: 0.4 }}
                               className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent flex flex-col justify-end p-6"
                             >
                               <h2
-                                className="text-5xl md:text-6xl font-black leading-none text-white"
+                                className="text-4xl md:text-6xl font-black leading-none text-white"
                                 style={{
-                                  fontFamily:
-                                    'Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif',
+                                  fontFamily: "Impact, sans-serif",
                                 }}
                               >
                                 {member.name}
@@ -273,7 +246,7 @@ export default function RaeCreatorProfile() {
                       </div>
                     </div>
                   </div>
-                </motion.div>
+                </motion.a>
               );
             })}
           </div>
