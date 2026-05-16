@@ -167,7 +167,7 @@ export default function RaeCreatorProfile() {
               };
 
               return (
-                <motion.div
+                <motion.a
                   key={member.name}
                   onClick={(e) => {
                     e.stopPropagation();
@@ -249,7 +249,7 @@ export default function RaeCreatorProfile() {
                       </div>
                     </div>
                   </div>
-                </motion.div>
+                </motion.a>
               );
             })}
           </div>
